@@ -22,11 +22,35 @@ const barcodeModal = document.getElementById("barcodeModal");
 const scanStatus = document.getElementById("scanStatus");
 const btnCancel = document.getElementById("btnCancel");
 const modalClose = document.getElementById("modalClose");
-const qrcodeDiv = document.getElementById("qrcode");
+const barcodeImage = document.getElementById("barcodeImage");
 
 // Check DOM elements
-if (!statusElement || !connectionStatus || !machineStatus || !messageLog || !btnDingin || !btnNormal || !btnPanas || !progressContainer || !progressBarFill || !progressText || !barcodeModal || !scanStatus || !btnCancel || !modalClose || !qrcodeDiv) {
-  console.error("DOM elements not found");
+const requiredElements = {
+  statusElement,
+  connectionStatus,
+  machineStatus,
+  messageLog,
+  btnDingin,
+  btnNormal,
+  btnPanas,
+  progressContainer,
+  progressBarFill,
+  progressText,
+  barcodeModal,
+  scanStatus,
+  btnCancel,
+  modalClose,
+  barcodeImage
+};
+
+const missingElements = Object.entries(requiredElements)
+  .filter(([key, value]) => !value)
+  .map(([key]) => key);
+
+if (missingElements.length > 0) {
+  console.error("DOM elements not found:", missingElements.join(", "));
+  alert("Error: Beberapa elemen tidak ditemukan. Periksa ID elemen di HTML.");
+  throw new Error("Missing DOM elements");
 }
 
 // Initialize
@@ -35,11 +59,11 @@ document.addEventListener("DOMContentLoaded", () => {
   connectToMQTT();
   addLogMessage("System", "Menginisialisasi koneksi MQTT...");
 
-  btnDingin.addEventListener("click", () => showQRCodeModal("dingin"));
-  btnNormal.addEventListener("click", () => showQRCodeModal("normal"));
-  btnPanas.addEventListener("click", () => showQRCodeModal("panas"));
-  btnCancel.addEventListener("click", closeQRCodeModal);
-  modalClose.addEventListener("click", closeQRCodeModal);
+  btnDingin.addEventListener("click", () => showBarcodeModal("dingin"));
+  btnNormal.addEventListener("click", () => showBarcodeModal("normal"));
+  btnPanas.addEventListener("click", () => showBarcodeModal("panas"));
+  btnCancel.addEventListener("click", closeBarcodeModal);
+  modalClose.addEventListener("click", closeBarcodeModal);
 });
 
 // Connect to MQTT Broker
@@ -98,21 +122,20 @@ function connectToMQTT() {
   }
 }
 
-// Show QR code modal
-function showQRCodeModal(command) {
+// Show barcode modal
+function showBarcodeModal(command) {
   selectedCommand = command;
-  scanStatus.textContent = "Silakan scan QR code dengan ponsel Anda";
+  scanStatus.textContent = "Silakan scan barcode dengan ponsel Anda";
   barcodeModal.style.display = "flex";
   
-  // Generate QR code
-  qrcodeDiv.innerHTML = ""; // Clear previous QR code
-  const qr = new QRCode(qrcodeDiv, {
-    text: `https://yourdomain.com/confirm?cmd=${command}`,
-    width: 200,
-    height: 200,
-    colorDark: "#000000",
-    colorLight: "#ffffff"
-  });
+  // Set barcode image
+  const imageMap = {
+    dingin: "dingin.gif",
+    normal: "normal.gif",
+    panas: "panas.gif"
+  };
+  barcodeImage.src = imageMap[command] || "";
+  barcodeImage.alt = `Barcode ${command}`;
 
   // Send command to ESP32
   if (client && client.connected) {
@@ -127,27 +150,32 @@ function showQRCodeModal(command) {
   } else {
     addLogMessage("Error", "Tidak terhubung ke MQTT");
     alert("Harap tunggu koneksi terjalin.");
+    closeBarcodeModal();
   }
 
   // Timeout after 30 seconds
   setTimeout(() => {
     if (barcodeModal.style.display === "flex") {
-      addLogMessage("Error", "Timeout: QR code tidak discan dalam 30 detik");
-      closeQRCodeModal();
+      addLogMessage("Error", "Timeout: Barcode tidak discan dalam 30 detik");
+      closeBarcodeModal();
     }
   }, 30000);
 }
 
-// Close QR code modal
-function closeQRCodeModal() {
+// Close barcode modal
+function closeBarcodeModal() {
   barcodeModal.style.display = "none";
-  scanStatus.textContent = "Silakan scan QR code dengan ponsel Anda";
-  qrcodeDiv.innerHTML = "";
+  scanStatus.textContent = "Silakan scan barcode dengan ponsel Anda";
+  barcodeImage.src = "";
   selectedCommand = null;
 }
 
 // Update connection status
 function updateConnectionStatus(status) {
+  if (!connectionStatus || !statusElement) {
+    console.error("Cannot update connection status: connectionStatus or statusElement is null");
+    return;
+  }
   connectionStatus.className = `connection-status ${status}`;
   switch (status) {
     case "connected":
@@ -171,13 +199,28 @@ function updateConnectionStatus(status) {
       btnNormal.disabled = true;
       btnPanas.disabled = true;
       break;
+    default:
+      statusElement.textContent = "Tidak Terhubung";
+      connectionStatus.innerHTML = '<i class="fas fa-wifi-slash"></i><span>Tidak Terhubung</span>';
+      btnDingin.disabled = true;
+      btnNormal.disabled = true;
+      btnPanas.disabled = true;
   }
 }
 
-// Update machine status (sama seperti versi awal)
+// Update machine status
 function updateMachineStatus(status) {
+  if (!machineStatus || !progressContainer || !progressBarFill || !progressText) {
+    console.error("Cannot update machine status: some elements are missing");
+    return;
+  }
   const indicator = machineStatus.querySelector(".status-indicator");
   const statusText = machineStatus.querySelector("span");
+
+  if (!indicator || !statusText) {
+    console.error("Machine status elements not found");
+    return;
+  }
 
   if (status === "ready") {
     indicator.className = "status-indicator ready";
@@ -262,6 +305,10 @@ function updateMachineStatus(status) {
 
 // Add message to log
 function addLogMessage(type, message) {
+  if (!messageLog) {
+    console.error("messageLog element not found");
+    return;
+  }
   const timestamp = new Date().toLocaleTimeString();
   const logItem = document.createElement("div");
   logItem.className = "log-item";
