@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kontrol mesin pengisian air dengan tiga mode: dingin, normal, dan panas.">
     <title>Filling Machine Control</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
@@ -14,17 +15,17 @@
             <p>Pilih mode pengisian</p>
         </header>
 
-        <main>
+        <section class="main-content">
             <div class="button-group">
-                <button class="scan-btn" data-type="dingin">
+                <button class="scan-btn" data-type="dingin" aria-label="Isi air dingin" role="button">
                     <span class="icon">❄️</span>
                     <span class="text">Isi Dingin</span>
                 </button>
-                <button class="scan-btn" data-type="normal">
+                <button class="scan-btn" data-type="normal" aria-label="Isi air normal" role="button">
                     <span class="icon">🌡️</span>
                     <span class="text">Isi Normal</span>
                 </button>
-                <button class="scan-btn" data-type="panas">
+                <button class="scan-btn" data-type="panas" aria-label="Isi air panas" role="button">
                     <span class="icon">🔥</span>
                     <span class="text">Isi Panas</span>
                 </button>
@@ -47,7 +48,7 @@
                 <span class="connection-indicator" id="connectionIndicator"></span>
                 <span id="connectionText">Menghubungkan ke MQTT...</span>
             </div>
-        </main>
+        </section>
     </div>
 
     <script src="main.js"></script>
