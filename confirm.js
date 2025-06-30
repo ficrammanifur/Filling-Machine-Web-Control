@@ -12,11 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const command = urlParams.get("cmd");
 
   if (!command || !["dingin", "normal", "panas"].includes(command)) {
-    confirmStatus.textContent = "Perintah tidak valid.";
+    if (confirmStatus) {
+      confirmStatus.textContent = "Perintah tidak valid.";
+    }
+    console.error("Invalid command:", command);
     return;
   }
 
-  confirmStatus.textContent = `Mengirim konfirmasi untuk ${command}...`;
+  if (confirmStatus) {
+    confirmStatus.textContent = `Mengirim konfirmasi untuk ${command}...`;
+  }
   connectToMQTT(command);
 });
 
@@ -37,10 +42,14 @@ function connectToMQTT(command) {
       console.log("Connected to MQTT broker");
       client.publish(MQTT_TOPIC_CONFIRM, "OK", { qos: 1 }, (err) => {
         if (err) {
-          confirmStatus.textContent = "Gagal mengirim konfirmasi.";
+          if (confirmStatus) {
+            confirmStatus.textContent = "Gagal mengirim konfirmasi.";
+          }
           console.error("Publish error:", err);
         } else {
-          confirmStatus.textContent = "Konfirmasi OK terkirim!";
+          if (confirmStatus) {
+            confirmStatus.textContent = "Konfirmasi OK terkirim!";
+          }
           setTimeout(() => {
             window.close(); // Menutup tab setelah konfirmasi
           }, 2000);
@@ -49,11 +58,15 @@ function connectToMQTT(command) {
     });
 
     client.on("error", (err) => {
-      confirmStatus.textContent = "Gagal terhubung ke MQTT.";
+      if (confirmStatus) {
+        confirmStatus.textContent = "Gagal terhubung ke MQTT.";
+      }
       console.error("Connection error:", err);
     });
   } catch (error) {
-    confirmStatus.textContent = "Terjadi kesalahan.";
+    if (confirmStatus) {
+      confirmStatus.textContent = "Terjadi kesalahan.";
+    }
     console.error("Initialization error:", error);
   }
 }
