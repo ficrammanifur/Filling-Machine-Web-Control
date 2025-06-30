@@ -19,11 +19,16 @@ if (!statusElement || !connectionStatus || !machineStatus || !messageLog || !btn
   console.error("DOM elements not found:", { statusElement, connectionStatus, machineStatus, messageLog, btnDingin, btnNormal, btnPanas });
 }
 
-// Initialize connection when page loads
+// Initialize connection and event listeners when page loads
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM loaded, initializing MQTT...");
   connectToMQTT();
   addLogMessage("System", "Menginisialisasi koneksi MQTT...");
+
+  // Add event listeners for buttons
+  btnDingin.addEventListener("click", () => sendCommand("dingin"));
+  btnNormal.addEventListener("click", () => sendCommand("normal"));
+  btnPanas.addEventListener("click", () => sendCommand("panas"));
 });
 
 // Connect to MQTT Broker
