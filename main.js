@@ -8,6 +8,13 @@ let messageCount = 0;
 let selectedCommand = null;
 let stream = null;
 
+// Barcode data mapping (adjust if GIFs encode different values)
+const barcodeMap = {
+  dingin: "dingin", // Replace with actual encoded value, e.g., "COLD123"
+  normal: "normal", // Replace with actual encoded value, e.g., "NORM456"
+  panas: "panas"    // Replace with actual encoded value, e.g., "HOT789"
+};
+
 // DOM Elements
 const statusElement = document.getElementById("statusText");
 const connectionStatus = document.getElementById("connectionStatus");
@@ -25,11 +32,13 @@ const webcamFeed = document.getElementById("webcamFeed");
 const webcamCanvas = document.getElementById("webcamCanvas");
 const scanStatus = document.getElementById("scanStatus");
 const btnOk = document.getElementById("btnOk");
+const btnCancel = document.getElementById("btnCancel");
 const modalClose = document.getElementById("modalClose");
+const modalContent = document.querySelector(".modal-content");
 
 // Check if DOM elements exist
-if (!statusElement || !connectionStatus || !machineStatus || !messageLog || !btnDingin || !btnNormal || !btnPanas || !progressContainer || !progressBarFill || !progressText || !barcodeModal || !barcodeImage || !webcamFeed || !webcamCanvas || !scanStatus || !btnOk || !modalClose) {
-  console.error("DOM elements not found:", { statusElement, connectionStatus, machineStatus, messageLog, btnDingin, btnNormal, btnPanas, progressContainer, progressBarFill, progressText, barcodeModal, barcodeImage, webcamFeed, webcamCanvas, scanStatus, btnOk, modalClose });
+if (!statusElement || !connectionStatus || !machineStatus || !messageLog || !btnDingin || !btnNormal || !btnPanas || !progressContainer || !progressBarFill || !progressText || !barcodeModal || !barcodeImage || !webcamFeed || !webcamCanvas || !scanStatus || !btnOk || !btnCancel || !modalClose || !modalContent) {
+  console.error("DOM elements not found:", { statusElement, connectionStatus, machineStatus, messageLog, btnDingin, btnNormal, btnPanas, progressContainer, progressBarFill, progressText, barcodeModal, barcodeImage, webcamFeed, webcamCanvas, scanStatus, btnOk, btnCancel, modalClose, modalContent });
 }
 
 // Initialize connection and event listeners when page loads
@@ -43,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   btnNormal.addEventListener("click", () => showBarcodeModal("normal"));
   btnPanas.addEventListener("click", () => showBarcodeModal("panas"));
   btnOk.addEventListener("click", sendCommand);
+  btnCancel.addEventListener("click", closeBarcodeModal);
   modalClose.addEventListener("click", closeBarcodeModal);
 });
 
@@ -118,8 +128,16 @@ function showBarcodeModal(command) {
   barcodeImage.style.display = "block";
   scanStatus.textContent = "Menunggu scan barcode...";
   btnOk.disabled = true;
+  modalContent.classList.remove("scanned");
   barcodeModal.style.display = "flex";
   startWebcam();
+  // Timeout after 30 seconds
+  setTimeout(() => {
+    if (barcodeModal.style.display === "flex") {
+      addLogMessage("Error", "Timeout: Tidak ada barcode discan dalam 30 detik");
+      closeBarcodeModal();
+    }
+  }, 30000);
 }
 
 // Start webcam feed for barcode scanning
@@ -150,9 +168,10 @@ function scanBarcode() {
       context.drawImage(webcamFeed, 0, 0, webcamCanvas.width, webcamCanvas.height);
       const imageData = context.getImageData(0, 0, webcamCanvas.width, webcamCanvas.height);
       const code = jsQR(imageData.data, imageData.width, imageData.height);
-      if (code && code.data === selectedCommand) {
+      if (code && code.data === barcodeMap[selectedCommand]) {
         scanStatus.textContent = `Barcode ${selectedCommand} terdeteksi!`;
         btnOk.disabled = false;
+        modalContent.classList.add("scanned");
         addLogMessage("Scan", `Barcode ${selectedCommand} berhasil discan`);
       } else {
         scanStatus.textContent = "Menunggu scan barcode...";
@@ -173,6 +192,7 @@ function closeBarcodeModal() {
   webcamCanvas.style.display = "none";
   scanStatus.textContent = "Menunggu scan barcode...";
   btnOk.disabled = true;
+  modalContent.classList.remove("scanned");
   selectedCommand = null;
   if (stream) {
     stream.getTracks().forEach(track => track.stop());
@@ -188,17 +208,26 @@ function sendCommand() {
         if (err) {
           console.error("Publish error:", err);
           addLogMessage("Error", `Gagal mengirim ${selectedCommand}: ${err.message}`);
+          alert("Gagal mengirim perintah. Silakan coba lagi.");
         } else {
           console.log("Published:", selectedCommand);
           addLogMessage("Terkirim", `Perintah ${selectedCommand} ke ESP32`);
+          let confirmSent = false;
           client.publish(MQTT_TOPIC_CONFIRM, "OK", { qos: 1 }, (err) => {
             if (err) {
               console.error("Confirm error:", err);
               addLogMessage("Error", `Gagal mengirim konfirmasi OK: ${err.message}`);
             } else {
               addLogMessage("Terkirim", "Konfirmasi OK dikirim ke ESP32");
+              confirmSent = true;
             }
           });
+          setTimeout(() => {
+            if (!confirmSent) {
+              addLogMessage("Error", "Tidak ada respons dari ESP32");
+              alert("Gagal mengirim perintah. Silakan coba lagi.");
+            }
+          }, 5000);
           closeBarcodeModal();
         }
       });
@@ -211,6 +240,7 @@ function sendCommand() {
     } catch (error) {
       console.error("Failed to send command:", error);
       addLogMessage("Error", `Gagal mengirim ${selectedCommand}: ${error.message}`);
+      alert("Gagal mengirim perintah. Silakan coba lagi.");
     }
   } else {
     addLogMessage("Error", "Tidak terhubung ke broker MQTT atau perintah tidak dipilih");
@@ -258,9 +288,7 @@ function updateConnectionStatus(status) {
 
 // Update machine status and progress bar
 function updateMachineStatus(status) {
-  if (!machineStatus || !progressContainer || !progressBarFill || ~
-
-System: !progressText) {
+  if (!machineStatus || !progressContainer || !progressBarFill || !progressText) {
     console.error("machineStatus or progress elements not found");
     return;
   }
