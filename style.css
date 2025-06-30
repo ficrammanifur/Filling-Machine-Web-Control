@@ -245,6 +245,49 @@ body {
   box-shadow: 0 15px 40px rgba(239, 68, 68, 0.4);
 }
 
+/* Progress Bar */
+.progress-container {
+  margin-bottom: 2rem;
+}
+
+.progress-container h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1f2937;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.progress-container i {
+  color: #667eea;
+}
+
+.progress-bar {
+  position: relative;
+  background: #e5e7eb;
+  border-radius: 10px;
+  height: 20px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
 /* Device Info */
 .device-info {
   margin-bottom: 2rem;
