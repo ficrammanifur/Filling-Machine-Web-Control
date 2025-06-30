@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function connectToMQTT() {
   try {
     updateConnectionStatus("connecting");
-    addLogMessage("System", "Menghubungkan ke broker.hivemq.com...");
+    addLogMessage("System", "Menghubungkan ke broker MQTT...");
 
     const clientId = `web-client-${Math.random().toString(16).substr(2, 8)}`;
 
@@ -304,13 +304,9 @@ setInterval(() => {
   }
 }, 10000);
 
-// Add visual effects and other event listeners
+// Add visual effects
 document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.style.scrollBehavior = "smooth";
-  const cards = document.querySelectorAll(".manual-card");
-  cards.forEach((card, index) => {
-    card.style.animationDelay = `${index * 0.1}s`;
-  });
 });
 
 document.addEventListener("visibilitychange", () => {
