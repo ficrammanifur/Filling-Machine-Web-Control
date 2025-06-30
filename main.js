@@ -7,8 +7,8 @@ class FillingMachineControl {
 
         this.mqttConfig = {
             host: 'broker.hivemq.com',
-            port: 8884, // Gunakan port WebSocket SSL untuk HiveMQ
-            protocol: 'wss', // Gunakan WebSocket Secure
+            port: 8884, // Secure WebSocket port for HiveMQ
+            protocol: 'wss', // Use secure WebSocket
             clientId: 'filling_web_' + Math.random().toString(16).substr(2, 8)
         };
 
@@ -36,7 +36,6 @@ class FillingMachineControl {
             clean: true,
             connectTimeout: 4000,
             reconnectPeriod: 1000,
-            // Tambahkan opsi SSL
             useSSL: true
         });
 
