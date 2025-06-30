@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MQTT Barcode Scanner</title>
+    <title>Filling Machine Control</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Barcode Scanner</h1>
-            <p>Pilih jenis scan yang diinginkan</p>
+            <h1>Filling Machine</h1>
+            <p>Pilih mode pengisian</p>
         </header>
 
         <main>
             <div class="button-group">
                 <button class="scan-btn" data-type="dingin">
                     <span class="icon">❄️</span>
-                    <span class="text">Scan Barcode Dingin</span>
+                    <span class="text">Isi Dingin</span>
                 </button>
-                
                 <button class="scan-btn" data-type="normal">
                     <span class="icon">🌡️</span>
-                    <span class="text">Scan Barcode Normal</span>
+                    <span class="text">Isi Normal</span>
                 </button>
-                
                 <button class="scan-btn" data-type="panas">
                     <span class="icon">🔥</span>
-                    <span class="text">Scan Barcode Panas</span>
+                    <span class="text">Isi Panas</span>
                 </button>
             </div>
 
@@ -37,7 +35,6 @@
                     <span class="status-label">Status:</span>
                     <span class="status-value" id="statusValue">Siap</span>
                 </div>
-                
                 <div class="progress-container" id="progressContainer" style="display: none;">
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
