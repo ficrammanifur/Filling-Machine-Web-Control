@@ -7,9 +7,11 @@
     <title>Filling Machine Control Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@ Ascending
+300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/mqtt@5.7.0/dist/mqtt.min.js"></script>
-    <script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script src="https://unpkg.com/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="main.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -42,17 +44,17 @@
                 </div>
                 
                 <div class="control-buttons">
-                    <button class="btn btn-dingin" id="btnDingin" aria-label="Isi air dingin" role="button">
+                    <button class="btn btn-dingin" id="btnDingin" aria-label="Isi air dingin">
                         <i class="fas fa-snowflake"></i>
                         <span>Isi Dingin</span>
                         <div class="btn-glow"></div>
                     </button>
-                    <button class="btn btn-normal" id="btnNormal" aria-label="Isi air normal" role="button">
+                    <button class="btn btn-normal" id="btnNormal" aria-label="Isi air normal">
                         <i class="fas fa-thermometer-half"></i>
                         <span>Isi Normal</span>
                         <div class="btn-glow"></div>
                     </button>
-                    <button class="btn btn-panas" id="btnPanas" aria-label="Isi air panas" role="button">
+                    <button class="btn btn-panas" id="btnPanas" aria-label="Isi air panas">
                         <i class="fas fa-fire"></i>
                         <span>Isi Panas</span>
                         <div class="btn-glow"></div>
@@ -82,17 +84,14 @@
         </div>
     </main>
 
-    <!-- Barcode Modal -->
+    <!-- QR Code Modal -->
     <div class="modal" id="barcodeModal" style="display: none;">
         <div class="modal-content">
             <span class="modal-close" id="modalClose">×</span>
-            <h2>Scan Barcode</h2>
-            <img id="barcodeImage" src="" alt="Barcode" style="display: none;">
-            <video id="webcamFeed" autoplay playsinline style="display: none;"></video>
-            <canvas id="webcamCanvas" style="display: none;"></canvas>
-            <p id="scanStatus">Menunggu scan barcode...</p>
+            <h2>Scan QR Code</h2>
+            <div id="qrcode" style="margin: 1rem auto;"></div>
+            <p id="scanStatus">Silakan scan QR code dengan ponsel Anda</p>
             <div class="modal-buttons">
-                <button class="btn btn-ok" id="btnOk" disabled>OK</button>
                 <button class="btn btn-cancel" id="btnCancel">Batal</button>
             </div>
         </div>
@@ -104,7 +103,5 @@
             <p>© 2025 Filling Machine Control Dashboard. Dibuat untuk penggemar IoT.</p>
         </div>
     </footer>
-
-    <script src="main.js"></script>
 </body>
 </html>
