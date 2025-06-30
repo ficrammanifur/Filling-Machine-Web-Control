@@ -1,4 +1,402 @@
-/* Tambahan untuk QR Code */
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header Styles */
+.header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+}
+
+.logo i {
+  font-size: 1.8rem;
+  color: #4ade80;
+}
+
+.logo h1 {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  color: white;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.connection-status.connected {
+  background: rgba(74, 222, 128, 0.2);
+  border: 1px solid #4ade80;
+}
+
+.connection-status.error {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid #ef4444;
+}
+
+.connection-status.connecting {
+  background: rgba(251, 191, 36, 0.2);
+  border: 1px solid #fbbf24;
+}
+
+.connection-status i {
+  animation: pulse 2s infinite;
+}
+
+/* Main Content */
+.main-content {
+  padding: 1.5rem 0;
+}
+
+/* Control Panel */
+.control-panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.panel-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1f2937;
+  font-size: 1.3rem;
+}
+
+.panel-header i {
+  color: #667eea;
+}
+
+.machine-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.status-indicator.ready {
+  background: #3b82f6;
+  box-shadow: 0 0 8px #3b82f6;
+}
+
+.status-indicator.progress {
+  background: #fbbf24;
+  box-shadow: 0 0 8px #fbbf24;
+}
+
+.status-indicator.done {
+  background: #4ade80;
+  box-shadow: 0 0 8px #4ade80;
+}
+
+.status-indicator.error {
+  background: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+}
+
+/* Control Buttons */
+.control-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  position: relative;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn i {
+  font-size: 1.5rem;
+}
+
+.btn-glow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover .btn-glow {
+  left: 100%;
+}
+
+.btn:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.btn-dingin {
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  color: white;
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-dingin:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+}
+
+.btn-normal {
+  background: linear-gradient(135deg, #4ade80, #22c55e);
+  color: white;
+  box-shadow: 0 5px 15px rgba(74, 222, 128, 0.3);
+}
+
+.btn-normal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(74, 222, 128, 0.4);
+}
+
+.btn-panas {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-panas:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(239, 68, 68, 0.4);
+}
+
+.btn-cancel {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+  box-shadow: 0 5px 15px rgba(107, 114, 128, 0.3);
+}
+
+.btn-cancel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(107, 114, 128, 0.4);
+}
+
+/* Progress Bar */
+.progress-container {
+  margin-bottom: 1.5rem;
+}
+
+.progress-container h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1f2937;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.progress-container i {
+  color: #667eea;
+}
+
+.progress-bar {
+  position: relative;
+  background: #e5e7eb;
+  border-radius: 8px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Message Log */
+.message-log {
+  background: #1f2937;
+  border-radius: 10px;
+  padding: 1rem;
+  color: white;
+}
+
+.message-log h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: #4ade80;
+  font-size: 1.1rem;
+}
+
+.log-content {
+  max-height: 150px;
+  overflow-y: auto;
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+}
+
+.log-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.log-item:last-child {
+  border-bottom: none;
+}
+
+.timestamp {
+  color: #fbbf24;
+  min-width: 70px;
+}
+
+.message {
+  color: #e5e7eb;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}
+
+.modal-content h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.modal-content p {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* QR Code */
 #qrcode {
   display: flex;
   justify-content: center;
@@ -11,16 +409,84 @@
   max-height: 200px;
 }
 
-/* Tambahan untuk tombol Batal */
-.btn-cancel {
-  background: linear-gradient(135deg, #6b7280, #4b5563);
+/* Footer */
+.footer {
+  background: rgba(0, 0, 0, 0.1);
   color: white;
-  box-shadow: 0 5px 15px rgba(107, 114, 128, 0.3);
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: 1.5rem;
 }
 
-.btn-cancel:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(107, 114, 128, 0.4);
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-/* Sisanya tetap sama seperti CSS awal Anda */
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+
+  .control-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .control-panel {
+    padding: 1rem;
+  }
+
+  .btn {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .btn i {
+    font-size: 1.2rem;
+  }
+
+  .modal-content {
+    padding: 1rem;
+  }
+}
+
+/* Custom Scrollbar */
+.log-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.log-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.log-content::-webkit-scrollbar-thumb {
+  background: #4ade80;
+  border-radius: 3px;
+}
+
+.log-content::-webkit-scrollbar-thumb:hover {
+  background: #22c55e;
+}
