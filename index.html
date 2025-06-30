@@ -9,6 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/mqtt@5.7.0/dist/mqtt.min.js"></script>
+    <script src="https://unpkg.com/jsqr@1.4.0/dist/jsQR.min.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -80,6 +81,19 @@
             </section>
         </div>
     </main>
+
+    <!-- Barcode Modal -->
+    <div class="modal" id="barcodeModal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <h2>Scan Barcode</h2>
+            <img id="barcodeImage" src="" alt="Barcode" style="display: none;">
+            <video id="webcamFeed" autoplay playsinline style="display: none;"></video>
+            <canvas id="webcamCanvas" style="display: none;"></canvas>
+            <p id="scanStatus">Menunggu scan barcode...</p>
+            <button class="btn btn-ok" id="btnOk" disabled>OK</button>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
