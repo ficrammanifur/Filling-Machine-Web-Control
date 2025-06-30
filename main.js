@@ -13,10 +13,13 @@ const messageLog = document.getElementById("messageLog");
 const btnDingin = document.getElementById("btnDingin");
 const btnNormal = document.getElementById("btnNormal");
 const btnPanas = document.getElementById("btnPanas");
+const progressContainer = document.getElementById("progressContainer");
+const progressBarFill = document.getElementById("progressBarFill");
+const progressText = document.getElementById("progressText");
 
 // Check if DOM elements exist
-if (!statusElement || !connectionStatus || !machineStatus || !messageLog || !btnDingin || !btnNormal || !btnPanas) {
-  console.error("DOM elements not found:", { statusElement, connectionStatus, machineStatus, messageLog, btnDingin, btnNormal, btnPanas });
+if (!statusElement || !connectionStatus || !machineStatus || !messageLog || !btnDingin || !btnNormal || !btnPanas || !progressContainer || !progressBarFill || !progressText) {
+  console.error("DOM elements not found:", { statusElement, connectionStatus, machineStatus, messageLog, btnDingin, btnNormal, btnPanas, progressContainer, progressBarFill, progressText });
 }
 
 // Initialize connection and event listeners when page loads
@@ -107,7 +110,6 @@ function sendCommand(command) {
         } else {
           console.log("Published:", command);
           addLogMessage("Terkirim", `Perintah ${command} ke ESP32`);
-          updateMachineStatus("progress");
         }
       });
 
@@ -164,22 +166,59 @@ function updateConnectionStatus(status) {
   }
 }
 
-// Update machine status display
+// Update machine status and progress bar
 function updateMachineStatus(status) {
-  if (!machineStatus) {
-    console.error("machineStatus element not found");
+  if (!machineStatus || !progressContainer || !progressBarFill || !progressText) {
+    console.error("machineStatus or progress elements not found");
     return;
   }
   const indicator = machineStatus.querySelector(".status-indicator");
   const statusText = machineStatus.querySelector("span");
-  if (status === "progress") {
+
+  if (status === "ready") {
+    indicator.className = "status-indicator ready";
+    statusText.textContent = "Status: Siap";
+    machineStatus.style.background = "rgba(59, 130, 246, 0.1)";
+    machineStatus.style.border = "1px solid #3b82f6";
+    progressContainer.style.display = "none";
+    progressBarFill.style.width = "0%";
+    progressText.textContent = "0%";
+  } else if (status === "motor_started") {
     indicator.className = "status-indicator progress";
-    statusText.textContent = "Status: Sedang Memproses...";
+    statusText.textContent = "Status: Motor Berjalan";
     machineStatus.style.background = "rgba(251, 191, 36, 0.1)";
     machineStatus.style.border = "1px solid #fbbf24";
-  } else if (status === "done") {
+    progressContainer.style.display = "none";
+    progressBarFill.style.width = "0%";
+    progressText.textContent = "0%";
+  } else if (status === "filling_started") {
+    indicator.className = "status-indicator progress";
+    statusText.textContent = "Status: Sedang Mengisi";
+    machineStatus.style.background = "rgba(251, 191, 36, 0.1)";
+    machineStatus.style.border = "1px solid #fbbf24";
+    progressContainer.style.display = "block";
+    progressBarFill.style.width = "0%";
+    progressText.textContent = "0%";
+  } else if (status.startsWith("progress:")) {
+    const percentage = parseFloat(status.split(":")[1]);
+    indicator.className = "status-indicator progress";
+    statusText.textContent = `Status: Mengisi (${percentage.toFixed(1)}%)`;
+    machineStatus.style.background = "rgba(251, 191, 36, 0.1)";
+    machineStatus.style.border = "1px solid #fbbf24";
+    progressContainer.style.display = "block";
+    progressBarFill.style.width = `${percentage}%`;
+    progressText.textContent = `${percentage.toFixed(1)}%`;
+  } else if (status === "filling_completed") {
     indicator.className = "status-indicator done";
-    statusText.textContent = "Status: Selesai";
+    statusText.textContent = "Status: Pengisian Selesai";
+    machineStatus.style.background = "rgba(74, 222, 128, 0.1)";
+    machineStatus.style.border = "1px solid #4ade80";
+    progressContainer.style.display = "block";
+    progressBarFill.style.width = "100%";
+    progressText.textContent = "100%";
+  } else if (status === "process_completed") {
+    indicator.className = "status-indicator done";
+    statusText.textContent = "Status: Proses Selesai";
     machineStatus.style.background = "rgba(74, 222, 128, 0.1)";
     machineStatus.style.border = "1px solid #4ade80";
     setTimeout(() => {
@@ -187,17 +226,43 @@ function updateMachineStatus(status) {
       statusText.textContent = "Status: Siap";
       machineStatus.style.background = "rgba(59, 130, 246, 0.1)";
       machineStatus.style.border = "1px solid #3b82f6";
+      progressContainer.style.display = "none";
+      progressBarFill.style.width = "0%";
+      progressText.textContent = "0%";
     }, 3000);
-  } else if (status === "error: unknown command") {
+  } else if (status.startsWith("mode_set:")) {
+    const mode = status.split(":")[1];
+    indicator.className = "status-indicator ready";
+    statusText.textContent = `Status: Mode ${mode} Dipilih`;
+    machineStatus.style.background = "rgba(59, 130, 246, 0.1)";
+    machineStatus.style.border = "1px solid #3b82f6";
+    progressContainer.style.display = "none";
+    progressBarFill.style.width = "0%";
+    progressText.textContent = "0%";
+  } else if (status === "error:process_active") {
+    indicator.className = "status-indicator error";
+    statusText.textContent = "Status: Proses Sedang Berjalan";
+    machineStatus.style.background = "rgba(239, 68, 68, 0.1)";
+    machineStatus.style.border = "1px solid #ef4444";
+    progressContainer.style.display = "none";
+    progressBarFill.style.width = "0%";
+    progressText.textContent = "0%";
+  } else if (status === "error:unknown_command") {
     indicator.className = "status-indicator error";
     statusText.textContent = "Status: Perintah Tidak Dikenal";
     machineStatus.style.background = "rgba(239, 68, 68, 0.1)";
     machineStatus.style.border = "1px solid #ef4444";
+    progressContainer.style.display = "none";
+    progressBarFill.style.width = "0%";
+    progressText.textContent = "0%";
   } else {
     indicator.className = "status-indicator ready";
     statusText.textContent = "Status: Siap";
     machineStatus.style.background = "rgba(59, 130, 246, 0.1)";
     machineStatus.style.border = "1px solid #3b82f6";
+    progressContainer.style.display = "none";
+    progressBarFill.style.width = "0%";
+    progressText.textContent = "0%";
   }
 }
 
