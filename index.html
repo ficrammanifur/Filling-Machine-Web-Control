@@ -58,6 +58,15 @@
                     </button>
                 </div>
 
+                <!-- Progress Bar -->
+                <div class="progress-container" id="progressContainer" style="display: none;">
+                    <h3><i class="fas fa-tachometer-alt"></i> Progres Pengisian</h3>
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;"></div>
+                        <span class="progress-text" id="progressText">0%</span>
+                    </div>
+                </div>
+
                 <div class="device-info">
                     <div class="info-grid">
                         <div class="info-card">
@@ -198,7 +207,7 @@
                                 <li><strong>Perintah Dingin:</strong> Mengirim "dingin" untuk mengaktifkan relay dingin</li>
                                 <li><strong>Perintah Normal:</strong> Mengirim "normal" untuk mengaktifkan relay normal</li>
                                 <li><strong>Perintah Panas:</strong> Mengirim "panas" untuk mengaktifkan relay panas</li>
-                                <li><strong>Feedback:</strong> ESP32 mengirim status "done" atau "error" ke topic status</li>
+                                <li><strong>Feedback:</strong> ESP32 mengirim status seperti "progress", "done", atau "error" ke topic status</li>
                             </ul>
                         </div>
                     </div>
