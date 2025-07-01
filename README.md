@@ -1,6 +1,6 @@
 # 🚰 Filling Machine Web Control
 
-**A responsive web dashboard to control a water filling machine (cold, normal, hot) using ESP32 & MQTT — featuring secure QR code confirmation.**  
+**A responsive web dashboard to control a water filling machine (cold, normal, hot) using ESP32 & MQTT — featuring secure QR code confirmation.**
 
 Laptop acts as the main display, while visitors scan QR codes from their phones to confirm commands. Simple, smart, and safe.
 
@@ -37,20 +37,17 @@ Select a mode (cold, normal, hot) on the dashboard → a QR code appears → vis
 ---
 
 ## 📁 Project Structure
+```text
 Filling-Machine-Web-Control/
-├── index.html # Main dashboard page
-├── confirm.html # Mobile confirmation page
-├── main.js # Dashboard logic
-├── confirm.js # Confirmation logic
-├── style.css # Styles
-├── dingin.gif # QR code: cold
-├── normal.gif # QR code: normal
-├── panas.gif # QR code: hot
+├── index.html        # Main dashboard page
+├── confirm.html      # Mobile confirmation page
+├── main.js           # Dashboard logic
+├── confirm.js        # Confirmation logic
+├── style.css         # Styles
+├── dingin.gif        # QR code: cold
+├── normal.gif        # QR code: normal
+├── panas.gif         # QR code: hot
 └── README.md
-
-yaml
-Salin
-Edit
 
 ---
 
