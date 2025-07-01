@@ -1,269 +1,148 @@
-# Filling Machine Web Control System
+# 🚰 Filling Machine Web Control
 
-A complete IoT solution for controlling an automatic filling machine with web interface, ESP32 microcontroller, and MQTT communication.
+**A responsive web dashboard to control a water filling machine (cold, normal, hot) using ESP32 & MQTT — featuring secure QR code confirmation.**  
 
-## 🚀 Features
-
-- **Web Interface**: Modern, responsive web UI with dark mode support
-- **Temperature Control**: Select between cold, hot, and normal water temperature
-- **Barcode Authorization**: Scan barcode for operation authorization
-- **Real-time Monitoring**: Live progress tracking and status updates
-- **MQTT Communication**: Reliable communication between web and ESP32
-- **Sensor Integration**: 3 ultrasonic sensors for precise glass positioning
-- **Safety Features**: Emergency stop and error handling
-
-## 📋 System Requirements
-
-### Hardware
-- ESP32 development board
-- 3x Ultrasonic sensors (HC-SR04 or similar)
-- 3x Relay modules (for temperature control)
-- DC motor for glass positioning
-- Water pump
-- Power supply (12V recommended)
-- Jumper wires and breadboard/PCB
-
-### Software
-- Arduino IDE with ESP32 board support
-- Modern web browser with camera access
-- MQTT broker (EMQX, Mosquitto, or cloud service)
-
-## 🛠 Installation
-
-### 1. Hardware Setup
-
-#### ESP32 Pin Connections:
-\`\`\`
-Ultrasonic Sensors:
-- Sensor 1: Trigger Pin 2, Echo Pin 3
-- Sensor 2: Trigger Pin 4, Echo Pin 5  
-- Sensor 3: Trigger Pin 6, Echo Pin 7
-
-Motor & Pump:
-- DC Motor: Pin 8
-- Water Pump: Pin 9
-
-Temperature Relays:
-- Cold Water: Pin 10
-- Hot Water: Pin 11
-- Normal Water: Pin 12
-\`\`\`
-
-#### Power Connections:
-- ESP32: 5V/3.3V from USB or external supply
-- Sensors: 5V VCC, GND
-- Relays: 5V VCC, GND
-- Motor/Pump: 12V through relay contacts
-
-### 2. Arduino IDE Setup
-
-1. Install ESP32 board support:
-   - File → Preferences
-   - Add to Additional Board Manager URLs: 
-     \`https://dl.espressif.com/dl/package_esp32_index.json\`
-   - Tools → Board → Boards Manager → Search "ESP32" → Install
-
-2. Install required libraries:
-   \`\`\`
-   Tools → Manage Libraries → Install:
-   - PubSubClient by Nick O'Leary
-   - NewPing by Tim Eckel
-   - ArduinoJson by Benoit Blanchon
-   \`\`\`
-
-3. Configure the code:
-   - Open \`filling-machine.ino\`
-   - Update WiFi credentials:
-     \`\`\`cpp
-     const char* ssid = "YOUR_WIFI_SSID";
-     const char* password = "YOUR_WIFI_PASSWORD";
-     \`\`\`
-   - Update MQTT broker settings if needed
-
-4. Upload to ESP32:
-   - Select board: "ESP32 Dev Module"
-   - Select correct COM port
-   - Click Upload
-
-### 3. Web Interface Setup
-
-1. **Local Development**:
-   \`\`\`bash
-   # Clone or download the project files
-   # Serve files using any local server
-   
-   # Using Python:
-   python -m http.server 8000
-   
-   # Using Node.js:
-   npx serve .
-   
-   # Using PHP:
-   php -S localhost:8000
-   \`\`\`
-
-2. **Access the interface**:
-   - Open browser to \`http://localhost:8000\`
-   - Allow camera permissions for barcode scanning
-
-### 4. MQTT Broker Setup
-
-#### Option 1: Public Broker (Testing)
-- Default: \`broker.emqx.io:8083\` (WebSocket)
-- No configuration needed for testing
-
-#### Option 2: Local Broker (Production)
-1. Install Mosquitto:
-   \`\`\`bash
-   # Ubuntu/Debian:
-   sudo apt install mosquitto mosquitto-clients
-   
-   # Windows: Download from mosquitto.org
-   # macOS: brew install mosquitto
-   \`\`\`
-
-2. Enable WebSocket support:
-   \`\`\`bash
-   # Edit /etc/mosquitto/mosquitto.conf
-   listener 1883
-   listener 8083
-   protocol websockets
-   allow_anonymous true
-   \`\`\`
-
-3. Start broker:
-   \`\`\`bash
-   sudo systemctl start mosquitto
-   # or
-   mosquitto -c /etc/mosquitto/mosquitto.conf
-   \`\`\`
-
-## 🎯 Usage
-
-### 1. System Startup
-1. Power on ESP32 - wait for WiFi connection
-2. Open web interface in browser
-3. Connect to MQTT broker using the settings panel
-
-### 2. Operating the Machine
-1. **Select Temperature**: Choose cold, hot, or normal water
-2. **Scan Barcode**: Click "Start Scanner" and scan authorization code
-3. **Start Filling**: Click "Start Filling" button
-4. **Monitor Progress**: Watch real-time status and progress bar
-
-### 3. Process Flow
-1. System waits for glass at sensor 1
-2. Motor moves glass to filling position (sensor 2)
-3. Pump fills glass for specified time
-4. Motor moves glass to final position (sensor 3)
-5. Process completes, system returns to idle
-
-## 🔧 Configuration
-
-### Sensor Calibration
-Adjust thresholds in ESP32 code:
-\`\`\`cpp
-#define GLASS_THRESHOLD 10  // Distance in cm for glass detection
-#define FILLING_TIME 5000   // Filling duration in milliseconds
-\`\`\`
-
-### MQTT Topics
-- \`filling/mode\` - Send filling commands
-- \`filling/status\` - Receive status updates  
-- \`filling/stop\` - Emergency stop command
-
-### Web Interface Settings
-- MQTT broker and port configurable in UI
-- Theme preference saved in localStorage
-- Responsive design for mobile devices
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**ESP32 not connecting to WiFi:**
-- Check SSID and password
-- Ensure 2.4GHz network (ESP32 doesn't support 5GHz)
-- Check signal strength
-
-**MQTT connection failed:**
-- Verify broker address and port
-- Check firewall settings
-- Try public broker for testing
-
-**Sensors not working:**
-- Check wiring connections
-- Verify power supply (5V for sensors)
-- Test individual sensors with simple code
-
-**Camera not working:**
-- Allow camera permissions in browser
-- Use HTTPS for production (required for camera access)
-- Try different browsers
-
-**Motor/Pump not responding:**
-- Check relay wiring and power
-- Verify relay control voltage (5V signal)
-- Test relays manually
-
-### Debug Mode
-Enable serial monitoring in Arduino IDE (115200 baud) to see:
-- WiFi connection status
-- MQTT messages
-- Sensor readings
-- State machine transitions
-
-## 📡 API Reference
-
-### MQTT Message Formats
-
-#### Filling Command (\`filling/mode\`):
-\`\`\`json
-{
-  "mode": "cold|hot|normal",
-  "barcode": "scanned_barcode_value",
-  "timestamp": "2024-01-01T12:00:00.000Z"
-}
-\`\`\`
-
-#### Status Updates (\`filling/status\`):
-\`\`\`json
-{
-  "status": "idle|waiting_glass|sensor1|sensor2|filling|sensor3|done|nogelas",
-  "step": "Human readable status description",
-  "progress": 0-100,
-  "timestamp": 1234567890
-}
-\`\`\`
-
-## 🔒 Security Considerations
-
-- Use secure MQTT broker with authentication in production
-- Implement proper barcode validation
-- Add user authentication for web interface
-- Use HTTPS for web interface
-- Regularly update ESP32 firmware
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch
-3. Make changes and test thoroughly
-4. Submit pull request with detailed description
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
-## 📞 Support
-
-For issues and questions:
-- Check troubleshooting section
-- Review Arduino IDE serial monitor output
-- Test individual components separately
-- Verify all connections and power supplies
+Laptop acts as the main display, while visitors scan QR codes from their phones to confirm commands. Simple, smart, and safe.
 
 ---
 
-**Happy Filling! 🚰**
-\`\`\`
+## 📑 Table of Contents
+- [✨ Overview](#-overview)
+- [🔧 Features](#-features)
+- [📁 Project Structure](#-project-structure)
+- [⚙️ Installation](#️-installation)
+- [🚀 Usage](#-usage)
+- [🧪 Testing](#-testing)
+- [📦 Dependencies](#-dependencies)
+- [📝 Notes](#-notes)
+- [📄 License](#-license)
+
+---
+
+## ✨ Overview
+A modern web interface to control a water filling machine powered by ESP32 and MQTT.  
+Select a mode (cold, normal, hot) on the dashboard → a QR code appears → visitor scans with a phone → phone sends “OK” via MQTT → machine starts filling.
+
+**Key idea:** commands are only executed after visitor confirmation, adding a secure, interactive layer.
+
+---
+
+## 🔧 Features
+✅ **User-friendly Dashboard** – Monitor status & choose modes easily  
+🔒 **QR Code Confirmation** – Scan to securely trigger filling  
+📊 **Real-time Updates** – See progress and status changes instantly  
+📱 **Responsive Design** – Optimized for desktop & mobile  
+🛡️ **Robust Handling** – Auto-reconnect & DOM safety checks
+
+---
+
+## 📁 Project Structure
+Filling-Machine-Web-Control/
+├── index.html # Main dashboard page
+├── confirm.html # Mobile confirmation page
+├── main.js # Dashboard logic
+├── confirm.js # Confirmation logic
+├── style.css # Styles
+├── dingin.gif # QR code: cold
+├── normal.gif # QR code: normal
+├── panas.gif # QR code: hot
+└── README.md
+
+yaml
+Salin
+Edit
+
+---
+
+## ⚙️ Installation
+
+### 🔍 Clone Repository
+```bash
+git clone https://github.com/ficrammanifur/Filling-Machine-Web-Control.git
+cd Filling-Machine-Web-Control
+🛠️ Generate QR Codes
+Use TEC-IT Barcode Generator or qrencode CLI:
+
+bash
+Salin
+Edit
+qrencode -o dingin.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=dingin"
+qrencode -o normal.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=normal"
+qrencode -o panas.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=panas"
+⚠️ Save the GIFs in the project root.
+
+🌐 Host the Project
+Option 1: GitHub Pages
+
+bash
+Salin
+Edit
+git add .
+git commit -m "Initial setup"
+git push origin main
+Enable GitHub Pages → main branch → root.
+Access dashboard at:
+➡️ https://ficrammanifur.github.io/Filling-Machine-Web-Control
+
+Option 2: Local server (e.g., http-server)
+
+bash
+Salin
+Edit
+npm install -g http-server
+http-server .
+Access at:
+➡️ http://localhost:8080
+
+🤖 Configure ESP32
+Upload Arduino sketch connecting to MQTT broker (wss://broker.hivemq.com:8884/mqtt)
+
+ESP32 subscribes: filling/perintah, filling/confirm
+
+ESP32 publishes: filling/status
+
+🚀 Usage
+1️⃣ Open dashboard:
+Access index.html via browser, GitHub Pages, or local server.
+
+2️⃣ Choose mode:
+Click "Dingin", "Normal", or "Panas" → QR code appears.
+
+3️⃣ Scan QR code:
+Use phone to open confirm.html?cmd=... → page sends "OK" via MQTT.
+
+4️⃣ Machine fills:
+See status updates: filling_started, progress:XX%, filling_completed.
+
+5️⃣ Cancel if needed:
+Close modal or click “Batal”.
+
+🧪 Testing
+✅ Confirm dashboard buttons show correct QR codes
+✅ Scan QR codes & check "Konfirmasi OK terkirim!" message
+✅ ESP32 receives commands & publishes status
+✅ Dashboard shows live updates
+
+💡 For local test, keep laptop & phone on the same Wi-Fi.
+
+📦 Dependencies
+MQTT.js – MQTT client
+
+Font Awesome – Icons
+
+Poppins – Font
+
+TEC-IT Barcode Generator – For QR codes
+
+📝 Notes
+Replace https://ficrammanifur.github.io/... in QR codes with your own domain or local IP (e.g., http://192.168.1.100).
+
+Consider adding auth tokens to QR URLs for security.
+
+If using TEC-IT QR codes publicly, keep the backlink per license.
+
+📄 License
+MIT License – see LICENSE.
+
+⚡ Built with ESP32, MQTT & curiosity
+⭐ Star the repo if you like it!
