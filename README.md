@@ -48,7 +48,7 @@ Filling-Machine-Web-Control/
 ├── normal.gif        # QR code: normal
 ├── panas.gif         # QR code: hot
 └── README.md
-
+```
 ---
 
 ## ⚙️ Installation
@@ -57,12 +57,11 @@ Filling-Machine-Web-Control/
 ```bash
 git clone https://github.com/ficrammanifur/Filling-Machine-Web-Control.git
 cd Filling-Machine-Web-Control
+```
 🛠️ Generate QR Codes
 Use TEC-IT Barcode Generator or qrencode CLI:
 
 bash
-Salin
-Edit
 qrencode -o dingin.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=dingin"
 qrencode -o normal.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=normal"
 qrencode -o panas.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=panas"
@@ -70,27 +69,24 @@ qrencode -o panas.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Contr
 
 🌐 Host the Project
 Option 1: GitHub Pages
-
-bash
-Salin
-Edit
+```bash
 git add .
 git commit -m "Initial setup"
 git push origin main
+```
 Enable GitHub Pages → main branch → root.
-Access dashboard at:
+```Access dashboard at:
 ➡️ https://ficrammanifur.github.io/Filling-Machine-Web-Control
-
+```
 Option 2: Local server (e.g., http-server)
 
-bash
-Salin
-Edit
+```bash
 npm install -g http-server
 http-server .
-Access at:
+```
+```Access at:
 ➡️ http://localhost:8080
-
+```
 🤖 Configure ESP32
 Upload Arduino sketch connecting to MQTT broker (wss://broker.hivemq.com:8884/mqtt)
 
@@ -131,13 +127,13 @@ Poppins – Font
 
 TEC-IT Barcode Generator – For QR codes
 
-📝 Notes
+```📝 Notes
 Replace https://ficrammanifur.github.io/... in QR codes with your own domain or local IP (e.g., http://192.168.1.100).
 
 Consider adding auth tokens to QR URLs for security.
 
 If using TEC-IT QR codes publicly, keep the backlink per license.
-
+```
 📄 License
 MIT License – see LICENSE.
 
