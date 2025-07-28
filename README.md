@@ -1,8 +1,4 @@
-# 🚰 Filling Machine Web Control
-
-**A responsive web dashboard to control a water filling machine (cold, normal, hot) using ESP32 & MQTT — featuring secure QR code confirmation.**
-
-Laptop acts as the main display, while visitors scan QR codes from their phones to confirm commands. Simple, smart, and safe.
+<h1 align="center">🚰 FILLING MACHINE WEB CONTROL</h1> <p align="center"><em>Secure, Interactive, and Smart Water Filling System with ESP32 & MQTT</em></p> <p align="center"> <img src="https://img.shields.io/badge/last%20commit-today-brightgreen" /> <img src="https://img.shields.io/badge/html%2Fjs%2Fcss-100%25-blue" /> <img src="https://img.shields.io/badge/languages-3-informational" /> </p> <p align="center"><em>Built with the tools and technologies:</em></p>
 
 ---
 
@@ -58,14 +54,16 @@ Filling-Machine-Web-Control/
 git clone https://github.com/ficrammanifur/Filling-Machine-Web-Control.git
 cd Filling-Machine-Web-Control
 ```
+
 🛠️ Generate QR Codes
 Use TEC-IT Barcode Generator or qrencode CLI:
 
-bash
+⚠️ Save the GIFs in the project root.
+```bash
 qrencode -o dingin.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=dingin"
 qrencode -o normal.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=normal"
 qrencode -o panas.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=panas"
-⚠️ Save the GIFs in the project root.
+```
 
 🌐 Host the Project
 Option 1: GitHub Pages
@@ -78,8 +76,8 @@ Enable GitHub Pages → main branch → root.
 ```Access dashboard at:
 ➡️ https://ficrammanifur.github.io/Filling-Machine-Web-Control
 ```
-Option 2: Local server (e.g., http-server)
 
+Option 2: Local server (e.g., http-server)
 ```bash
 npm install -g http-server
 http-server .
@@ -87,12 +85,15 @@ http-server .
 ```Access at:
 ➡️ http://localhost:8080
 ```
+
+---
+
 🤖 Configure ESP32
 Upload Arduino sketch connecting to MQTT broker (wss://broker.hivemq.com:8884/mqtt)
-
 ESP32 subscribes: filling/perintah, filling/confirm
-
 ESP32 publishes: filling/status
+
+---
 
 🚀 Usage
 1️⃣ Open dashboard:
@@ -110,6 +111,8 @@ See status updates: filling_started, progress:XX%, filling_completed.
 5️⃣ Cancel if needed:
 Close modal or click “Batal”.
 
+---
+
 🧪 Testing
 ✅ Confirm dashboard buttons show correct QR codes
 ✅ Scan QR codes & check "Konfirmasi OK terkirim!" message
@@ -120,22 +123,21 @@ Close modal or click “Batal”.
 
 📦 Dependencies
 MQTT.js – MQTT client
-
 Font Awesome – Icons
-
 Poppins – Font
-
 TEC-IT Barcode Generator – For QR codes
 
 ```📝 Notes
 Replace https://ficrammanifur.github.io/... in QR codes with your own domain or local IP (e.g., http://192.168.1.100).
-
-Consider adding auth tokens to QR URLs for security.
-
-If using TEC-IT QR codes publicly, keep the backlink per license.
 ```
+Consider adding auth tokens to QR URLs for security.
+If using TEC-IT QR codes publicly, keep the backlink per license.
+
+
 📄 License
-MIT License – see LICENSE.
+<p align="center"> <a href="https://github.com/ficrammanifur/Filling-Machine-Web-Control/blob/main/LICENSE"> <img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT" /> </a> </p>
+
+<p align="center"><a href="#️filling-machine-web-control">⬆ Back to Top</a></p>
 
 ⚡ Built with ESP32, MQTT & curiosity
 ⭐ Star the repo if you like it!
