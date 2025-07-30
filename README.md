@@ -114,9 +114,13 @@ Close modal or click “Batal”.
 ---
 
 🧪 Testing
+
 ✅ Confirm dashboard buttons show correct QR codes
+
 ✅ Scan QR codes & check "Konfirmasi OK terkirim!" message
+
 ✅ ESP32 receives commands & publishes status
+
 ✅ Dashboard shows live updates
 
 💡 For local test, keep laptop & phone on the same Wi-Fi.
