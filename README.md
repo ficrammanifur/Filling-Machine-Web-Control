@@ -137,6 +137,7 @@ TEC-IT Barcode Generator – For QR codes
 Replace https://ficrammanifur.github.io/... in QR codes with your own domain or local IP (e.g., http://192.168.1.100).
 ```
 Consider adding auth tokens to QR URLs for security.
+
 If using TEC-IT QR codes publicly, keep the backlink per license.
 
 
@@ -146,4 +147,4 @@ If using TEC-IT QR codes publicly, keep the backlink per license.
 ⚡ Built with ESP32, MQTT & curiosity
 ⭐ Star the repo if you like it!
 
-<p align="center"><a href="#️filling-machine-web-control">⬆ Back to Top</a></p>
+<p align="center"><a href="Filling-Machine-Web-Control">⬆ Back to Top</a></p>
