@@ -1,4 +1,5 @@
 <h1 align="center">🚰 FILLING MACHINE WEB CONTROL</h1> <p align="center"><em>Secure, Interactive, and Smart Water Filling System with ESP32 & MQTT</em></p> <p align="center"> <img src="https://img.shields.io/badge/last%20commit-today-brightgreen" /> <img src="https://img.shields.io/badge/html%2Fjs%2Fcss-100%25-blue" /> <img src="https://img.shields.io/badge/languages-3-informational" /> </p> <p align="center"><em>Built with the tools and technologies:</em></p>
+<p align="center"> <a href="https://github.com/ficrammanifur/ficrammanifur/blob/main/LICENSE"> <img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT" /> </a> </p>
 
 ---
 
@@ -139,10 +140,6 @@ Replace https://ficrammanifur.github.io/... in QR codes with your own domain or 
 Consider adding auth tokens to QR URLs for security.
 
 If using TEC-IT QR codes publicly, keep the backlink per license.
-
-
-📄 License
-<p align="center"> <a href="https://github.com/ficrammanifur/ficrammanifur/blob/main/LICENSE"> <img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT" /> </a> </p>
 
 ⚡ Built with ESP32, MQTT & curiosity
 ⭐ Star the repo if you like it!
