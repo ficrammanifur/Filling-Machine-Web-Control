@@ -146,5 +146,3 @@ If using TEC-IT QR codes publicly, keep the backlink per license.
 
 ⚡ Built with ESP32, MQTT & curiosity
 ⭐ Star the repo if you like it!
-
-<p align="center"><a href="Filling-Machine-Web-Control">⬆ Back to Top</a></p>
