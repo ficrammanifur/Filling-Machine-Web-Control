@@ -123,6 +123,8 @@ Close modal or click “Batal”.
 
 ✅ Dashboard shows live updates
 
+---
+
 💡 For local test, keep laptop & phone on the same Wi-Fi.
 
 📦 Dependencies
@@ -141,7 +143,7 @@ If using TEC-IT QR codes publicly, keep the backlink per license.
 📄 License
 <p align="center"> <a href="https://github.com/ficrammanifur/ficrammanifur/blob/main/LICENSE"> <img src="https://img.shields.io/badge/license-MIT-blue" alt="License: MIT" /> </a> </p>
 
-<p align="center"><a href="#️filling-machine-web-control">⬆ Back to Top</a></p>
-
 ⚡ Built with ESP32, MQTT & curiosity
 ⭐ Star the repo if you like it!
+
+<p align="center"><a href="#️filling-machine-web-control">⬆ Back to Top</a></p>
