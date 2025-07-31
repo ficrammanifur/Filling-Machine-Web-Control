@@ -81,7 +81,7 @@
 ```text
 ┌─────────────────┐    MQTT     ┌─────────────────┐    WiFi    ┌─────────────────┐
 │   Web Dashboard │ ◄─────────► │   MQTT Broker   │ ◄────────► │      ESP32      │
-│  (index.html)   │             │ (HiveMQ/EMQX)   │            │ (Filling Machine)│
+│   (index.html)  │             │  (HiveMQ/EMQX)  │            │(Filling Machine)│
 └─────────────────┘             └─────────────────┘            └─────────────────┘
          │                                                               │
          │ QR Code                                                       │
