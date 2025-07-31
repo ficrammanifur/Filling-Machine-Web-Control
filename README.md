@@ -65,18 +65,18 @@ git clone https://github.com/ficrammanifur/Filling-Machine-Web-Control.git
 cd Filling-Machine-Web-Control
 ```
 
-🛠️ Generate QR Codes
+### 🛠️ Generate QR Codes
 Use TEC-IT Barcode Generator or qrencode CLI:
 
-⚠️ Save the GIFs in the project root.
+### ⚠️ Save the GIFs in the project root.
 ```bash
 qrencode -o dingin.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=dingin"
 qrencode -o normal.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=normal"
 qrencode -o panas.gif "https://ficrammanifur.github.io/Filling-Machine-Web-Control/confirm.html?cmd=panas"
 ```
 
-🌐 Host the Project
-Option 1: GitHub Pages
+### 🌐 Host the Project
+## Option 1: GitHub Pages
 ```bash
 git add .
 git commit -m "Initial setup"
@@ -87,7 +87,7 @@ Enable GitHub Pages → main branch → root.
 ➡️ https://ficrammanifur.github.io/Filling-Machine-Web-Control
 ```
 
-Option 2: Local server (e.g., http-server)
+## Option 2: Local server (e.g., http-server)
 ```bash
 npm install -g http-server
 http-server .
@@ -98,14 +98,14 @@ http-server .
 
 ---
 
-🤖 Configure ESP32
+### 🤖 Configure ESP32
 Upload Arduino sketch connecting to MQTT broker (wss://broker.hivemq.com:8884/mqtt)
 ESP32 subscribes: filling/perintah, filling/confirm
 ESP32 publishes: filling/status
 
 ---
 
-🚀 Usage
+### 🚀 Usage
 1️⃣ Open dashboard:
 Access index.html via browser, GitHub Pages, or local server.
 
@@ -123,7 +123,7 @@ Close modal or click “Batal”.
 
 ---
 
-🧪 Testing
+### 🧪 Testing
 
 ✅ Confirm dashboard buttons show correct QR codes
 
@@ -137,7 +137,7 @@ Close modal or click “Batal”.
 
 💡 For local test, keep laptop & phone on the same Wi-Fi.
 
-📦 Dependencies
+### 📦 Dependencies
 MQTT.js – MQTT client
 Font Awesome – Icons
 Poppins – Font
