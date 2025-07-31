@@ -150,5 +150,11 @@ Consider adding auth tokens to QR URLs for security.
 
 If using TEC-IT QR codes publicly, keep the backlink per license.
 
+<div align="center">
+
 ⚡ Built with ESP32, MQTT & curiosity
+
 ⭐ Star the repo if you like it!
+
+<p><a href="#top">⬆ Kembali ke Atas</a></p>
+</div>
